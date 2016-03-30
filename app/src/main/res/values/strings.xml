@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TwitterClient</string>
+    <string name="tweet_content_hint">What are you thinking?</string>
+    <string name="tweet">Tweet</string>
+</resources>
