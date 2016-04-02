@@ -6,7 +6,11 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = AppModule.class)
 public interface AppComponent {
-    void inject(ListTweetView injectee);
+    void inject(App injectee);
+
+    void inject(TweetsActivity injectee);
+
+    void inject(TweetsView injectee);
 
     void inject(ComposeTweetView injectee);
 }

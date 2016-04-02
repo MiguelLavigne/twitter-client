@@ -12,11 +12,12 @@ import butterknife.OnClick;
 import javax.inject.Inject;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class TweetsView extends RelativeLayout {
     @Bind(R.id.tweets) RecyclerView tweets;
 
-    @Inject TweetRepository tweetRepository;
+    @Inject TweetGateway tweetGateway;
 
     private TweetsAdapter adapter;
     private LinearLayoutManager layoutManager;
@@ -44,7 +45,10 @@ public class TweetsView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        subscription = tweetRepository.get().observeOn(AndroidSchedulers.mainThread()).subscribe(adapter);
+        subscription = tweetGateway.get()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(adapter);
     }
 
     @Override
