@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -58,11 +59,12 @@ public class TweetPersistence {
     }
 
     public Observable<List<Tweet>> asObservable() {
-        return tweetsPreferences.asObservable();
-    }
-
-    public List<Tweet> getAll() {
-        return tweetsPreferences.get();
+        return tweetsPreferences.asObservable()
+                .map(tweets -> {
+                    Collections.sort(tweets, (lhs, rhs) -> lhs.date.compareTo(rhs.date));
+                    Collections.reverse(tweets);
+                    return tweets;
+                });
     }
 
     public void clear() {

@@ -2,6 +2,8 @@ package com.example.android.twitterclient;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import javax.inject.Inject;
 import rx.subscriptions.CompositeSubscription;
 
 public class ComposeTweetView extends RelativeLayout implements BaseView {
+    @Bind(R.id.coordinator) CoordinatorLayout coordinator;
     @Bind(R.id.tweet_msg) EditText msgEdit;
     @Bind(R.id.tweet) Button tweetButton;
     @Bind(R.id.progress_container) FrameLayout progress;
@@ -79,5 +82,12 @@ public class ComposeTweetView extends RelativeLayout implements BaseView {
 
     public void back() {
         ((Activity) getContext()).finish();
+    }
+
+    public void showErrorMessage() {
+        Snackbar snackbar = Snackbar.make(coordinator, "Failed to tweet", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Retry", v -> {
+            presenter.onRetryClick();
+        });
     }
 }

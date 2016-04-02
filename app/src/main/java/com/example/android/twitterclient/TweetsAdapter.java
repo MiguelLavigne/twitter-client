@@ -28,6 +28,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.user.setText(tweets.get(position).user);
         holder.message.setText(tweets.get(position).message);
+        holder.date.setText(tweets.get(position).date.toString());
     }
 
     @Override
@@ -45,6 +46,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.user) public TextView user;
         @Bind(R.id.message) public TextView message;
+        @Bind(R.id.date) public TextView date;
 
         public ViewHolder(View itemView) {
             super(itemView);

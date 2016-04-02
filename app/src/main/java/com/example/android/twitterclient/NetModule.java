@@ -38,17 +38,17 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public TwitterApi provideTwitterApi(MockRetrofit mockRetrofit, TwitterApiPersistence persistence) {
-        return new MockTwitterApi(mockRetrofit.create(TwitterApi.class), persistence);
+    public TwitterApi provideTwitterApi(MockRetrofit mockRetrofit, DateProvider dateProvider) {
+        return new MockTwitterApi(mockRetrofit.create(TwitterApi.class), dateProvider);
     }
 
     private static class MockTwitterApi implements TwitterApi {
         private final BehaviorDelegate<TwitterApi> behaviorDelegate;
-        private final TwitterApiPersistence persistence;
+        private final DateProvider dateProvider;
 
-        public MockTwitterApi(BehaviorDelegate<TwitterApi> behaviorDelegate, TwitterApiPersistence persistence) {
+        public MockTwitterApi(BehaviorDelegate<TwitterApi> behaviorDelegate, DateProvider dateProvider) {
             this.behaviorDelegate = behaviorDelegate;
-            this.persistence = persistence;
+            this.dateProvider = dateProvider;
         }
 
         @Override
@@ -59,8 +59,8 @@ public class NetModule {
         @Override
         public Observable<List<Tweet>> getTweets() {
             List<Tweet> tweets = new ArrayList<>(2);
-            tweets.add(new Tweet("user6", "fetch tweet message"));
-            tweets.add(new Tweet("user7", "fetch tweet message"));
+            tweets.add(new Tweet("user6", "fetch tweet message", dateProvider.getTime()));
+            tweets.add(new Tweet("user7", "fetch tweet message", dateProvider.getTime()));
             return behaviorDelegate.returningResponse(tweets).getTweets();
         }
     }
