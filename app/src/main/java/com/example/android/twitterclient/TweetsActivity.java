@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 public class TweetsActivity extends AppCompatActivity {
     @Inject TweetPersistence tweetPersistence;
+    @Inject TwitterApiPersistence twitterApiPersistence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +20,10 @@ public class TweetsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem item = menu.add("Clear tweets");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                tweetPersistence.clear();
-                return true;
-            }
+        item.setOnMenuItemClickListener(item1 -> {
+            twitterApiPersistence.clear();
+            tweetPersistence.clear();
+            return true;
         });
         return super.onCreateOptionsMenu(menu);
     }

@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import rx.Observable;
 
 public class App extends Application {
-    @Inject TweetPersistence tweetPersistence;
+    @Inject TwitterApiPersistence twitterApiPersistence;
 
     private AppComponent component;
 
@@ -18,7 +18,7 @@ public class App extends Application {
                 .build();
         component().inject(this);
 
-        intervalFakeTweets();
+        //intervalFakeTweets();
     }
 
     public AppComponent component() {
@@ -26,9 +26,9 @@ public class App extends Application {
     }
 
     private void intervalFakeTweets() {
-        Observable.interval(0, 15, TimeUnit.SECONDS).subscribe(value -> {
+        Observable.interval(0, 30, TimeUnit.SECONDS).subscribe(value -> {
             String userStr = String.format("user%d", (value % 5) + 1);
-            tweetPersistence.add(new Tweet(userStr, "Generated tweet messages, don't expect much here " + value));
+            twitterApiPersistence.add(new Tweet(userStr, "Generated tweet messages, don't expect much here " + value));
         });
     }
 }

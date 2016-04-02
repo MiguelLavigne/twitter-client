@@ -4,21 +4,29 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 @Singleton
 public class TweetGateway {
     private final TweetPersistence tweetPersistence;
+    private final TwitterApi twitterApi;
 
     @Inject
-    public TweetGateway(TweetPersistence tweetPersistence) {
+    public TweetGateway(TweetPersistence tweetPersistence, TwitterApi twitterApi) {
         this.tweetPersistence = tweetPersistence;
+        this.twitterApi = twitterApi;
     }
 
     public Observable<List<Tweet>> get() {
-        return tweetPersistence.getAll();
+        twitterApi.getTweets()
+                .subscribeOn(Schedulers.io())
+                .subscribe(tweetPersistence::addAll);
+        return tweetPersistence.asObservable();
     }
 
-    public void add(Tweet tweet) {
-        tweetPersistence.add(tweet);
+    public Observable<Void> add(Tweet tweet) {
+        return twitterApi.postTweet(tweet)
+                .doOnNext(tweetPersistence::add)
+                .map(t -> null);
     }
 }

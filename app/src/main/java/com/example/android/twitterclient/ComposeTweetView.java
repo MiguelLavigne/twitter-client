@@ -3,8 +3,10 @@ package com.example.android.twitterclient;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,6 +18,7 @@ import rx.subscriptions.CompositeSubscription;
 public class ComposeTweetView extends RelativeLayout implements BaseView {
     @Bind(R.id.tweet_msg) EditText msgEdit;
     @Bind(R.id.tweet) Button tweetButton;
+    @Bind(R.id.progress_container) FrameLayout progress;
 
     @Inject ComposeTweetPresenter presenter;
 
@@ -60,6 +63,14 @@ public class ComposeTweetView extends RelativeLayout implements BaseView {
 
     public void setTweetButtonEnabled() {
         tweetButton.setEnabled(true);
+    }
+
+    public void setProgressVisible() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    public void setProgressGone() {
+        progress.setVisibility(View.GONE);
     }
 
     public String getTweetMessage() {

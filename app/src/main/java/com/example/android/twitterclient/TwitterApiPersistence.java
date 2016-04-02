@@ -14,15 +14,15 @@ import javax.inject.Singleton;
 import rx.Observable;
 
 @Singleton
-public class TweetPersistence {
+public class TwitterApiPersistence {
     private final Gson gson = new Gson();
     private final Type type = new TypeToken<List<Tweet>>() {}.getType();
     private final Preference<List<Tweet>> tweetsPreferences;
 
     @Inject
-    public TweetPersistence(SharedPreferences sharedPreferences) {
+    public TwitterApiPersistence(SharedPreferences sharedPreferences) {
         RxSharedPreferences sp = RxSharedPreferences.create(sharedPreferences);
-        tweetsPreferences = sp.getObject("tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
+        tweetsPreferences = sp.getObject("twitter_api_tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
             @Override
             public List<Tweet> get(@NonNull String key, @NonNull SharedPreferences preferences) {
                 return fromJson(preferences.getString(key, "[]"));
@@ -50,19 +50,8 @@ public class TweetPersistence {
         tweetsPreferences.set(tweets);
     }
 
-    public void addAll(List<Tweet> tweets) {
-        List<Tweet> persisted = tweetsPreferences.get();
-        assert persisted != null;
-        persisted.addAll(tweets);
-        tweetsPreferences.set(persisted);
-    }
-
-    public Observable<List<Tweet>> asObservable() {
+    public Observable<List<Tweet>> getAll() {
         return tweetsPreferences.asObservable();
-    }
-
-    public List<Tweet> getAll() {
-        return tweetsPreferences.get();
     }
 
     public void clear() {

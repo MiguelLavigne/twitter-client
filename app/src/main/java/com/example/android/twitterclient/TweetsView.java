@@ -27,7 +27,7 @@ public class TweetsView extends RelativeLayout {
         super(context, attrs);
         ((App) context.getApplicationContext()).component().inject(this);
         adapter = new TweetsAdapter();
-        layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true);
+        layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
     }
 
     @Override

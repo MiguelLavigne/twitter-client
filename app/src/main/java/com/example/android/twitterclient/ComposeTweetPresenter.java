@@ -1,6 +1,8 @@
 package com.example.android.twitterclient;
 
 import javax.inject.Inject;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ComposeTweetPresenter extends BasePresenter<ComposeTweetView> {
     private final TweetGateway tweetGateway;
@@ -13,8 +15,12 @@ public class ComposeTweetPresenter extends BasePresenter<ComposeTweetView> {
     public void onTweetClick() {
         String content = getView().getTweetMessage();
         if (content.length() > 0) {
-            tweetGateway.add(new Tweet("miguel", content));
-            getView().back();
+            getView().setProgressVisible();
+            tweetGateway.add(new Tweet("miguel", content))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aVoid -> getView().back(),
+                            t -> getView().setProgressGone());
         }
     }
 
