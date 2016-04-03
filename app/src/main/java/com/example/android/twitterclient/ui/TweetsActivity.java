@@ -21,11 +21,17 @@ public class TweetsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item = menu.add("Clear tweets");
-        item.setOnMenuItemClickListener(item1 -> {
-            sharedPreferences.edit().clear().commit();
-            return true;
-        });
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.tweets_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clear_tweets:
+                sharedPreferences.edit().clear().commit();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
