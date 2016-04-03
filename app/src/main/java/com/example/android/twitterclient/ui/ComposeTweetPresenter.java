@@ -1,7 +1,6 @@
 package com.example.android.twitterclient.ui;
 
 import com.example.android.twitterclient.domain.CreateTweet;
-import com.example.android.twitterclient.domain.CreateTweetRequest;
 import javax.inject.Inject;
 
 public class ComposeTweetPresenter extends BasePresenter<ComposeTweetView> {
@@ -16,7 +15,7 @@ public class ComposeTweetPresenter extends BasePresenter<ComposeTweetView> {
         String content = getView().getTweetMessage();
         if (content.length() > 0) {
             getView().setProgressVisible();
-            createTweet.execute(new CreateTweetRequest("miguel", content))
+            createTweet.execute(content)
                     .subscribe(
                             e -> getView().back(),
                             t -> {

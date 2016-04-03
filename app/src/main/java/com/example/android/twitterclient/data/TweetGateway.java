@@ -5,11 +5,9 @@ import com.f2prateek.rx.preferences.Preference;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-@Singleton
 public class TweetGateway {
     private final TweetPersistence tweetPersistence;
     private final TwitterApi twitterApi;

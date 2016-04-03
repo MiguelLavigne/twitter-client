@@ -56,6 +56,12 @@ public class NetModule {
         }
 
         @Override
+        public Observable<LoginResponse> login(String username, String password) {
+            final boolean successful = "trov22".equals(password);
+            return behaviorDelegate.returningResponse(new LoginResponse(successful, username)).login(username, password);
+        }
+
+        @Override
         public Observable<Tweet> postTweet(Tweet tweet) {
             persistence.add(tweet);
             return behaviorDelegate.returningResponse(tweet).postTweet(tweet);

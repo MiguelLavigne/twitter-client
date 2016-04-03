@@ -28,9 +28,8 @@ public class TweetPersistence {
     private final Preference<List<Tweet>> tweetsPreferences;
 
     @Inject
-    public TweetPersistence(SharedPreferences sharedPreferences) {
+    public TweetPersistence(RxSharedPreferences sp) {
         gson = buildGson();
-        RxSharedPreferences sp = RxSharedPreferences.create(sharedPreferences);
         tweetsPreferences = sp.getObject("tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
             @Override
             public List<Tweet> get(@NonNull String key, @NonNull SharedPreferences preferences) {
@@ -65,13 +64,6 @@ public class TweetPersistence {
                 return DateTime.parse(in.nextString());
             }
         }).create();
-    }
-
-    public void add(Tweet tweet) {
-        List<Tweet> tweets = tweetsPreferences.get();
-        assert tweets != null;
-        tweets.add(tweet);
-        tweetsPreferences.set(tweets);
     }
 
     public void addAll(List<Tweet> tweets) {

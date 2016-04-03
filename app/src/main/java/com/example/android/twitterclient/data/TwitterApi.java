@@ -6,6 +6,9 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 public interface TwitterApi {
+    @POST("/user/login")
+    Observable<LoginResponse> login(String username, String password);
+
     @POST("/user/tweet")
     Observable<Tweet> postTweet(Tweet tweet);
 

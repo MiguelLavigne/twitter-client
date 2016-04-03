@@ -27,7 +27,7 @@ public class TwitterApiPersistence {
     private final Preference<List<Tweet>> tweetsPreferences;
 
     @Inject
-    public TwitterApiPersistence(SharedPreferences sharedPreferences) {
+    public TwitterApiPersistence(RxSharedPreferences sp) {
         gson = new GsonBuilder().registerTypeAdapter(DateTime.class, new TypeAdapter<DateTime>() {
             @Override
             public void write(JsonWriter out, DateTime value) throws IOException {
@@ -39,7 +39,6 @@ public class TwitterApiPersistence {
                 return DateTime.parse(in.nextString());
             }
         }).create();
-        RxSharedPreferences sp = RxSharedPreferences.create(sharedPreferences);
         tweetsPreferences = sp.getObject("twitter_api_tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
             @Override
             public List<Tweet> get(@NonNull String key, @NonNull SharedPreferences preferences) {
