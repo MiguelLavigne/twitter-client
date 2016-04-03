@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.domain;
 
 import org.joda.time.DateTime;
 

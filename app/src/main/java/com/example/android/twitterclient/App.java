@@ -1,6 +1,7 @@
 package com.example.android.twitterclient;
 
 import android.app.Application;
+import com.example.android.twitterclient.data.TwitterApiPersistence;
 import com.facebook.stetho.Stetho;
 import javax.inject.Inject;
 import net.danlew.android.joda.JodaTimeAndroid;

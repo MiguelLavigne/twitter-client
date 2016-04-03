@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.android.twitterclient.TweetsView
+<com.example.android.twitterclient.ui.TweetsView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/content"
@@ -9,7 +9,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context=".TweetsActivity">
+        tools:context=".ui.TweetsActivity">
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/tweets"
@@ -27,4 +27,4 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_plus"/>
 
-</com.example.android.twitterclient.TweetsView>
+</com.example.android.twitterclient.ui.TweetsView>

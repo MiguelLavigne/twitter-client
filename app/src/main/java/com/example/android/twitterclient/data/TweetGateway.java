@@ -1,5 +1,6 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.data;
 
+import com.example.android.twitterclient.domain.Tweet;
 import com.f2prateek.rx.preferences.Preference;
 import java.util.List;
 import javax.inject.Inject;

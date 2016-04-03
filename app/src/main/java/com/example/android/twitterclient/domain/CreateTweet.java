@@ -1,5 +1,7 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.domain;
 
+import com.example.android.twitterclient.util.DateProvider;
+import com.example.android.twitterclient.data.TweetGateway;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

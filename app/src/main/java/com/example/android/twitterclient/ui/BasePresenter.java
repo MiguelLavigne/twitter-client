@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.ui;
 
 public abstract class BasePresenter<View extends BaseView> {
 

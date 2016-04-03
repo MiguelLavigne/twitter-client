@@ -1,8 +1,9 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.data;
 
+import com.example.android.twitterclient.util.DateProvider;
+import com.example.android.twitterclient.domain.Tweet;
 import dagger.Module;
 import dagger.Provides;
-import java.util.Date;
 import java.util.List;
 import javax.inject.Singleton;
 import org.joda.time.DateTime;

@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.example.android.twitterclient.App;
+import com.example.android.twitterclient.R;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import javax.inject.Inject;

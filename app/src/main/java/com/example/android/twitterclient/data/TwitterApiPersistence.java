@@ -1,7 +1,8 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.data;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import com.example.android.twitterclient.domain.Tweet;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
@@ -13,7 +14,6 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,16 +21,26 @@ import org.joda.time.DateTime;
 import rx.Observable;
 
 @Singleton
-public class TweetPersistence {
+public class TwitterApiPersistence {
     private final Gson gson;
     private final Type type = new TypeToken<List<Tweet>>() {}.getType();
     private final Preference<List<Tweet>> tweetsPreferences;
 
     @Inject
-    public TweetPersistence(SharedPreferences sharedPreferences) {
-        gson = buildGson();
+    public TwitterApiPersistence(SharedPreferences sharedPreferences) {
+        gson = new GsonBuilder().registerTypeAdapter(DateTime.class, new TypeAdapter<DateTime>() {
+            @Override
+            public void write(JsonWriter out, DateTime value) throws IOException {
+                out.value(value.toString());
+            }
+
+            @Override
+            public DateTime read(JsonReader in) throws IOException {
+                return DateTime.parse(in.nextString());
+            }
+        }).create();
         RxSharedPreferences sp = RxSharedPreferences.create(sharedPreferences);
-        tweetsPreferences = sp.getObject("tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
+        tweetsPreferences = sp.getObject("twitter_api_tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
             @Override
             public List<Tweet> get(@NonNull String key, @NonNull SharedPreferences preferences) {
                 return fromJson(preferences.getString(key, "[]"));
@@ -51,21 +61,6 @@ public class TweetPersistence {
         });
     }
 
-    @NonNull
-    private Gson buildGson() {
-        return new GsonBuilder().registerTypeAdapter(DateTime.class, new TypeAdapter<DateTime>() {
-            @Override
-            public void write(JsonWriter out, DateTime value) throws IOException {
-                out.value(value.toString());
-            }
-
-            @Override
-            public DateTime read(JsonReader in) throws IOException {
-                return DateTime.parse(in.nextString());
-            }
-        }).create();
-    }
-
     public void add(Tweet tweet) {
         List<Tweet> tweets = tweetsPreferences.get();
         assert tweets != null;
@@ -73,20 +68,8 @@ public class TweetPersistence {
         tweetsPreferences.set(tweets);
     }
 
-    public void addAll(List<Tweet> tweets) {
-        List<Tweet> persisted = tweetsPreferences.get();
-        assert persisted != null;
-        persisted.addAll(tweets);
-        tweetsPreferences.set(persisted);
-    }
-
-    public Observable<List<Tweet>> asObservable() {
-        return tweetsPreferences.asObservable()
-                .map(tweets -> {
-                    Collections.sort(tweets, (lhs, rhs) -> lhs.date.compareTo(rhs.date));
-                    Collections.reverse(tweets);
-                    return tweets;
-                });
+    public Observable<List<Tweet>> getAll() {
+        return tweetsPreferences.asObservable();
     }
 
     public void clear() {

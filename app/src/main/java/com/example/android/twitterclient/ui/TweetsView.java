@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.widget.RelativeLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.example.android.twitterclient.App;
+import com.example.android.twitterclient.R;
+import com.example.android.twitterclient.data.TweetGateway;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import javax.inject.Inject;
 import rx.Subscription;

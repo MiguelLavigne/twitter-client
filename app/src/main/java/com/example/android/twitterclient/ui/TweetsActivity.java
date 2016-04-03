@@ -1,10 +1,12 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.example.android.twitterclient.App;
+import com.example.android.twitterclient.R;
 import javax.inject.Inject;
 
 public class TweetsActivity extends AppCompatActivity {

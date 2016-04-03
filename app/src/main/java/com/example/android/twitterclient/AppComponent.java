@@ -1,5 +1,9 @@
 package com.example.android.twitterclient;
 
+import com.example.android.twitterclient.data.NetModule;
+import com.example.android.twitterclient.ui.ComposeTweetView;
+import com.example.android.twitterclient.ui.TweetsActivity;
+import com.example.android.twitterclient.ui.TweetsView;
 import dagger.Component;
 import javax.inject.Singleton;
 

@@ -1,5 +1,7 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.ui;
 
+import com.example.android.twitterclient.domain.CreateTweet;
+import com.example.android.twitterclient.domain.CreateTweetRequest;
 import javax.inject.Inject;
 
 public class ComposeTweetPresenter extends BasePresenter<ComposeTweetView> {

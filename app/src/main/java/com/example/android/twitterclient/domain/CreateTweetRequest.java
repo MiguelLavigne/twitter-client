@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.domain;
 
 import java.util.Date;
 

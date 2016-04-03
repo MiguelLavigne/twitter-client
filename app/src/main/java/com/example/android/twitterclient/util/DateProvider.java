@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.util;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

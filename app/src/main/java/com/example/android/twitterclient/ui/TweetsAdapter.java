@@ -1,4 +1,4 @@
-package com.example.android.twitterclient;
+package com.example.android.twitterclient.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.example.android.twitterclient.R;
+import com.example.android.twitterclient.domain.Tweet;
 import java.util.ArrayList;
 import java.util.List;
 import rx.functions.Action1;
