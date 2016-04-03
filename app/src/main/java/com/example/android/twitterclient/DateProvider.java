@@ -1,8 +1,10 @@
 package com.example.android.twitterclient;
 
-import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
 
 @Singleton
 public class DateProvider {
@@ -11,7 +13,14 @@ public class DateProvider {
     public DateProvider() {
     }
 
-    public Date getTime() {
-        return new Date();
+    public DateTime getTime() {
+        return new DateTime(DateTimeZone.UTC);
+    }
+
+    public DateTime fromStringDate(String date) {
+        if (date == null) {
+            return null;
+        }
+        return DateTime.parse(date);
     }
 }

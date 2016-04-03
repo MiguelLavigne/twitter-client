@@ -1,10 +1,9 @@
 package com.example.android.twitterclient;
 
 import android.app.Application;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import com.facebook.stetho.Stetho;
 import javax.inject.Inject;
-import rx.Observable;
+import net.danlew.android.joda.JodaTimeAndroid;
 
 public class App extends Application {
     @Inject TwitterApiPersistence twitterApiPersistence;
@@ -17,19 +16,13 @@ public class App extends Application {
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
-        component().inject(this);
 
-        //intervalFakeTweets();
+        component().inject(this);
+        JodaTimeAndroid.init(this);
+        Stetho.initializeWithDefaults(this);
     }
 
     public AppComponent component() {
         return component;
-    }
-
-    private void intervalFakeTweets() {
-        Observable.interval(0, 30, TimeUnit.SECONDS).subscribe(value -> {
-            String userStr = String.format("user%d", (value % 5) + 1);
-            twitterApiPersistence.add(new Tweet(userStr, "Generated tweet messages, don't expect much here " + value, new Date()));
-        });
     }
 }

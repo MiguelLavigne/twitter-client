@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import javax.inject.Inject;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,6 +38,7 @@ public class TweetsView extends RelativeLayout {
             return;
         }
         ButterKnife.bind(this);
+        tweets.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
         tweets.setHasFixedSize(true);
         tweets.setLayoutManager(layoutManager);
         tweets.setAdapter(adapter);

@@ -2,9 +2,10 @@ package com.example.android.twitterclient;
 
 import dagger.Module;
 import dagger.Provides;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Singleton;
+import org.joda.time.DateTime;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -38,30 +39,42 @@ public class NetModule {
 
     @Provides
     @Singleton
-    public TwitterApi provideTwitterApi(MockRetrofit mockRetrofit, DateProvider dateProvider) {
-        return new MockTwitterApi(mockRetrofit.create(TwitterApi.class), dateProvider);
+    public TwitterApi provideTwitterApi(MockRetrofit mockRetrofit, TwitterApiPersistence persistence, DateProvider dateProvider) {
+        return new MockTwitterApi(mockRetrofit.create(TwitterApi.class), persistence, dateProvider);
     }
 
     private static class MockTwitterApi implements TwitterApi {
         private final BehaviorDelegate<TwitterApi> behaviorDelegate;
+        private final TwitterApiPersistence persistence;
         private final DateProvider dateProvider;
 
-        public MockTwitterApi(BehaviorDelegate<TwitterApi> behaviorDelegate, DateProvider dateProvider) {
+        public MockTwitterApi(BehaviorDelegate<TwitterApi> behaviorDelegate, TwitterApiPersistence persistence, DateProvider dateProvider) {
             this.behaviorDelegate = behaviorDelegate;
+            this.persistence = persistence;
             this.dateProvider = dateProvider;
         }
 
         @Override
         public Observable<Tweet> postTweet(Tweet tweet) {
+            persistence.add(tweet);
             return behaviorDelegate.returningResponse(tweet).postTweet(tweet);
         }
 
         @Override
-        public Observable<List<Tweet>> getTweets() {
-            List<Tweet> tweets = new ArrayList<>(2);
-            tweets.add(new Tweet("user6", "fetch tweet message", dateProvider.getTime()));
-            tweets.add(new Tweet("user7", "fetch tweet message", dateProvider.getTime()));
-            return behaviorDelegate.returningResponse(tweets).getTweets();
+        public Observable<GetTweetResponse> getTweets(String since) {
+            final List<Tweet> tweets = persistence.getAll().toBlocking().first();
+            final GetTweetResponse response = new GetTweetResponse(getTweetsSince(tweets, since), dateProvider.getTime().toString());
+
+            return behaviorDelegate.returningResponse(response).getTweets(since);
+        }
+
+        private List<Tweet> getTweetsSince(List<Tweet> tweets, String sinceString) {
+            DateTime since = dateProvider.fromStringDate(sinceString);
+            return Observable.from(tweets)
+                    .filter(tweet -> since == null || tweet.date.isAfter(since))
+                    .toList()
+                    .toBlocking()
+                    .first();
         }
     }
 }

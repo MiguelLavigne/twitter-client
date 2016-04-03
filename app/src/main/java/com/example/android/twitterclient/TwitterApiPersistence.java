@@ -5,22 +5,39 @@ import android.support.annotation.NonNull;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.joda.time.DateTime;
 import rx.Observable;
 
 @Singleton
 public class TwitterApiPersistence {
-    private final Gson gson = new Gson();
+    private final Gson gson;
     private final Type type = new TypeToken<List<Tweet>>() {}.getType();
     private final Preference<List<Tweet>> tweetsPreferences;
 
     @Inject
     public TwitterApiPersistence(SharedPreferences sharedPreferences) {
+        gson = new GsonBuilder().registerTypeAdapter(DateTime.class, new TypeAdapter<DateTime>() {
+            @Override
+            public void write(JsonWriter out, DateTime value) throws IOException {
+                out.value(value.toString());
+            }
+
+            @Override
+            public DateTime read(JsonReader in) throws IOException {
+                return DateTime.parse(in.nextString());
+            }
+        }).create();
         RxSharedPreferences sp = RxSharedPreferences.create(sharedPreferences);
         tweetsPreferences = sp.getObject("twitter_api_tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
             @Override
