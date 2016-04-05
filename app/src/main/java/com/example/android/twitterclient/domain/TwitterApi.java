@@ -1,6 +1,5 @@
-package com.example.android.twitterclient.data;
+package com.example.android.twitterclient.domain;
 
-import com.example.android.twitterclient.domain.Tweet;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;

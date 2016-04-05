@@ -1,7 +1,5 @@
 package com.example.android.twitterclient.domain;
 
-import com.example.android.twitterclient.data.TweetPersistence;
-import com.example.android.twitterclient.data.UserPersistence;
 import com.f2prateek.rx.preferences.Preference;
 import javax.inject.Inject;
 import javax.inject.Named;

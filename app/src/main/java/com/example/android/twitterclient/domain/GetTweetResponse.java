@@ -1,6 +1,5 @@
-package com.example.android.twitterclient.data;
+package com.example.android.twitterclient.domain;
 
-import com.example.android.twitterclient.domain.Tweet;
 import java.util.List;
 
 public class GetTweetResponse {

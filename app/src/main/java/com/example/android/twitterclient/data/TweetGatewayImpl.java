@@ -1,6 +1,9 @@
 package com.example.android.twitterclient.data;
 
 import com.example.android.twitterclient.domain.Tweet;
+import com.example.android.twitterclient.domain.TweetGateway;
+import com.example.android.twitterclient.domain.TweetPersistence;
+import com.example.android.twitterclient.domain.TwitterApi;
 import com.f2prateek.rx.preferences.Preference;
 import java.util.List;
 import javax.inject.Inject;
@@ -8,19 +11,20 @@ import javax.inject.Named;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class TweetGateway {
+public class TweetGatewayImpl implements TweetGateway {
     private final TweetPersistence tweetPersistence;
     private final TwitterApi twitterApi;
     private final Preference<String> sincePreference;
 
     @Inject
-    public TweetGateway(TweetPersistence tweetPersistence, TwitterApi twitterApi,
+    public TweetGatewayImpl(TweetPersistence tweetPersistence, TwitterApi twitterApi,
             @Named("LatestTweetsTimestamp") Preference<String> sincePreference) {
         this.tweetPersistence = tweetPersistence;
         this.twitterApi = twitterApi;
         this.sincePreference = sincePreference;
     }
 
+    @Override
     public Observable<List<Tweet>> get() {
         twitterApi.getTweets(sincePreference.get())
                 .doOnNext(response -> sincePreference.set(response.timestamp))
@@ -30,6 +34,7 @@ public class TweetGateway {
         return tweetPersistence.asObservable();
     }
 
+    @Override
     public Observable<Void> add(Tweet tweet) {
         return twitterApi.postTweet(tweet)
                 .doOnNext(t -> tweetPersistence.add(t))

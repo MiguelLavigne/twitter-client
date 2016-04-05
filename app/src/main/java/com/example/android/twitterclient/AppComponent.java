@@ -1,5 +1,6 @@
 package com.example.android.twitterclient;
 
+import com.example.android.twitterclient.data.DataModule;
 import com.example.android.twitterclient.data.NetModule;
 import com.example.android.twitterclient.ui.ComposeTweetView;
 import com.example.android.twitterclient.ui.LoginView;
@@ -9,7 +10,7 @@ import dagger.Component;
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = { AppModule.class, NetModule.class })
+@Component(modules = { AppModule.class, NetModule.class, DataModule.class })
 public interface AppComponent {
     void inject(App injectee);
 

@@ -1,10 +1,6 @@
-package com.example.android.twitterclient.data;
-
-import rx.functions.Func1;
+package com.example.android.twitterclient.domain;
 
 public class LoginResponse {
-    public static final Func1<LoginResponse, Boolean> SUCCESS = response -> response.successful;
-
     public final boolean successful;
     public final String username;
 

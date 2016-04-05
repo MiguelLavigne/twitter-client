@@ -1,7 +1,10 @@
 package com.example.android.twitterclient.data;
 
-import com.example.android.twitterclient.util.DateProvider;
+import com.example.android.twitterclient.domain.GetTweetResponse;
+import com.example.android.twitterclient.domain.LoginResponse;
 import com.example.android.twitterclient.domain.Tweet;
+import com.example.android.twitterclient.domain.TwitterApi;
+import com.example.android.twitterclient.util.DateProvider;
 import dagger.Module;
 import dagger.Provides;
 import java.util.List;

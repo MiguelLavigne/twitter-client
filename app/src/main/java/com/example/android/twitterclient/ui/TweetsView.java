@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.example.android.twitterclient.App;
 import com.example.android.twitterclient.R;
-import com.example.android.twitterclient.data.TweetGateway;
+import com.example.android.twitterclient.domain.TweetGateway;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import javax.inject.Inject;
 import rx.Subscription;

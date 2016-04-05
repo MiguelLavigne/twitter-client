@@ -2,20 +2,16 @@ package com.example.android.twitterclient.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.example.android.twitterclient.App;
 import com.example.android.twitterclient.R;
-import com.example.android.twitterclient.data.TweetPersistence;
 import com.example.android.twitterclient.data.TwitterApiPersistence;
-import com.example.android.twitterclient.data.UserPersistence;
 import com.example.android.twitterclient.domain.LogoutUser;
-import com.f2prateek.rx.preferences.Preference;
+import com.example.android.twitterclient.domain.UserPersistence;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class TweetsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_LOGIN = 1;

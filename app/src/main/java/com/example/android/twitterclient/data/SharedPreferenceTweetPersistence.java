@@ -3,6 +3,7 @@ package com.example.android.twitterclient.data;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import com.example.android.twitterclient.domain.Tweet;
+import com.example.android.twitterclient.domain.TweetPersistence;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
@@ -20,13 +21,13 @@ import javax.inject.Inject;
 import org.joda.time.DateTime;
 import rx.Observable;
 
-public class TweetPersistence {
+public class SharedPreferenceTweetPersistence implements TweetPersistence {
     private final Gson gson;
     private final Type type = new TypeToken<List<Tweet>>() {}.getType();
     private final Preference<List<Tweet>> tweetsPreferences;
 
     @Inject
-    public TweetPersistence(RxSharedPreferences sp) {
+    public SharedPreferenceTweetPersistence(RxSharedPreferences sp) {
         gson = buildGson();
         tweetsPreferences = sp.getObject("tweets", new ArrayList<>(), new Preference.Adapter<List<Tweet>>() {
             @Override
@@ -64,6 +65,7 @@ public class TweetPersistence {
         }).create();
     }
 
+    @Override
     public void addAll(List<Tweet> tweets) {
         List<Tweet> persistedTweets = tweetsPreferences.get();
         assert persistedTweets != null;
@@ -73,6 +75,7 @@ public class TweetPersistence {
         tweetsPreferences.set(persistedTweets);
     }
 
+    @Override
     public Observable<List<Tweet>> asObservable() {
         return tweetsPreferences.asObservable()
                 .map(tweets -> {
@@ -82,10 +85,12 @@ public class TweetPersistence {
                 });
     }
 
+    @Override
     public void clear() {
         tweetsPreferences.delete();
     }
 
+    @Override
     public void add(Tweet tweet) {
         List<Tweet> persistedTweets = tweetsPreferences.get();
         assert persistedTweets != null;
