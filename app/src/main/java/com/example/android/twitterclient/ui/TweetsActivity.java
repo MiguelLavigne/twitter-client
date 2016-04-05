@@ -11,6 +11,7 @@ import com.example.android.twitterclient.App;
 import com.example.android.twitterclient.R;
 import com.example.android.twitterclient.data.TweetPersistence;
 import com.example.android.twitterclient.data.TwitterApiPersistence;
+import com.example.android.twitterclient.data.UserPersistence;
 import com.example.android.twitterclient.domain.LogoutUser;
 import com.f2prateek.rx.preferences.Preference;
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ import javax.inject.Named;
 public class TweetsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_LOGIN = 1;
     @Inject TwitterApiPersistence twitterApiPersistence;
-    @Inject @Named("user") Preference<String> user;
+    @Inject UserPersistence userPersistence;
     @Inject LogoutUser logoutUser;
 
     @Override
@@ -34,8 +35,7 @@ public class TweetsActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
-        //noinspection ConstantConditions
-        return user.get() != null && !user.get().isEmpty();
+        return userPersistence.exists();
     }
 
     @Override

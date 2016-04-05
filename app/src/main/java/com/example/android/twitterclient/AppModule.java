@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import com.example.android.twitterclient.data.UserPersistence;
+import com.example.android.twitterclient.domain.User;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import dagger.Module;
@@ -51,9 +53,7 @@ public class AppModule {
     }
 
     @Provides
-    @Singleton
-    @Named("user")
-    public Preference<String> provideUser(SharedPreferences sp) {
-        return RxSharedPreferences.create(sp).getString("user");
+    public User provideUser(UserPersistence userPersistence) {
+        return userPersistence.get();
     }
 }
