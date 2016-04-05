@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import rx.Observable;
 
@@ -66,10 +65,12 @@ public class TweetPersistence {
     }
 
     public void addAll(List<Tweet> tweets) {
-        List<Tweet> persisted = tweetsPreferences.get();
-        assert persisted != null;
-        persisted.addAll(tweets);
-        tweetsPreferences.set(persisted);
+        List<Tweet> persistedTweets = tweetsPreferences.get();
+        assert persistedTweets != null;
+        for (Tweet tweet : tweets) {
+            internalAdd(tweet, persistedTweets);
+        }
+        tweetsPreferences.set(persistedTweets);
     }
 
     public Observable<List<Tweet>> asObservable() {
@@ -86,9 +87,15 @@ public class TweetPersistence {
     }
 
     public void add(Tweet tweet) {
-        List<Tweet> persisted = tweetsPreferences.get();
-        assert persisted != null;
-        persisted.add(tweet);
-        tweetsPreferences.set(persisted);
+        List<Tweet> persistedTweets = tweetsPreferences.get();
+        assert persistedTweets != null;
+        internalAdd(tweet, persistedTweets);
+        tweetsPreferences.set(persistedTweets);
+    }
+
+    private void internalAdd(Tweet tweet, List<Tweet> tweets) {
+        if (!tweets.contains(tweet)) {
+            tweets.add(tweet);
+        }
     }
 }
