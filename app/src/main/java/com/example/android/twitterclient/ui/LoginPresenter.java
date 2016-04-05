@@ -5,6 +5,7 @@ import com.example.android.twitterclient.util.Booleans;
 import com.example.android.twitterclient.util.ConnectivityProvider;
 import com.example.android.twitterclient.util.Funcs;
 import javax.inject.Inject;
+import rx.Observable;
 import rx.observables.ConnectableObservable;
 import rx.subscriptions.CompositeSubscription;
 
@@ -24,7 +25,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     protected void onReady() {
         super.onReady();
         subscriptions = new CompositeSubscription();
-        ConnectableObservable<Boolean> connectivityObservable = connectivityProvider.observe().publish();
+        Observable<Boolean> observable = connectivityProvider.observe();
+        ConnectableObservable<Boolean> connectivityObservable = observable.publish();//connectivityProvider.observe().publish();
         subscriptions.add(
                 connectivityObservable.filter(Booleans.TRUE)
                         .subscribe(connected -> handleConnectivityRestored())
