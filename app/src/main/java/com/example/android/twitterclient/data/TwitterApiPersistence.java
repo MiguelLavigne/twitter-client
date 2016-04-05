@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import rx.Observable;
 
-@Singleton
 public class TwitterApiPersistence {
     private final Gson gson;
     private final Type type = new TypeToken<List<Tweet>>() {}.getType();
