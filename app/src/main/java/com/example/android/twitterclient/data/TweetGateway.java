@@ -32,7 +32,7 @@ public class TweetGateway {
 
     public Observable<Void> add(Tweet tweet) {
         return twitterApi.postTweet(tweet)
-                .flatMap(postedTweet -> twitterApi.getTweets(sincePreference.get()))
+                .doOnNext(t -> tweetPersistence.add(t))
                 .map(t -> null);
     }
 }

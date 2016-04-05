@@ -1,5 +1,6 @@
 package com.example.android.twitterclient.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -124,5 +125,10 @@ public class LoginView extends FrameLayout implements BaseView {
     public void showNoConnectivityView() {
         snackbar = Snackbar.make(coordinatorLayout, "No connectivity", Snackbar.LENGTH_LONG);
         snackbar.show();
+    }
+
+    public void goBack() {
+        ((Activity) getContext()).setResult(Activity.RESULT_OK);
+        ((Activity) getContext()).finish();
     }
 }

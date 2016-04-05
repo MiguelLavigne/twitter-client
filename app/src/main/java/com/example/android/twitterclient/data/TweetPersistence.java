@@ -85,4 +85,11 @@ public class TweetPersistence {
     public void clear() {
         tweetsPreferences.delete();
     }
+
+    public void add(Tweet tweet) {
+        List<Tweet> persisted = tweetsPreferences.get();
+        assert persisted != null;
+        persisted.add(tweet);
+        tweetsPreferences.set(persisted);
+    }
 }

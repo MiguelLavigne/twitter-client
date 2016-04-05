@@ -1,7 +1,5 @@
 package com.example.android.twitterclient.ui;
 
-import android.app.Activity;
-import com.example.android.twitterclient.data.TwitterApi;
 import com.example.android.twitterclient.domain.LoginUser;
 import com.example.android.twitterclient.util.Booleans;
 import com.example.android.twitterclient.util.ConnectivityProvider;
@@ -11,15 +9,13 @@ import rx.observables.ConnectableObservable;
 import rx.subscriptions.CompositeSubscription;
 
 public class LoginPresenter extends BasePresenter<LoginView> {
-    private final TwitterApi twitterApi;
     private final ConnectivityProvider connectivityProvider;
     private final LoginUser loginUser;
 
     private CompositeSubscription subscriptions;
 
     @Inject
-    public LoginPresenter(TwitterApi twitterApi, ConnectivityProvider connectivityProvider, LoginUser loginUser) {
-        this.twitterApi = twitterApi;
+    public LoginPresenter(ConnectivityProvider connectivityProvider, LoginUser loginUser) {
         this.connectivityProvider = connectivityProvider;
         this.loginUser = loginUser;
     }
@@ -38,7 +34,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                         .subscribe(notConnected -> handleLostOfConnectivity())
         );
         subscriptions.add(connectivityObservable.connect());
-        enableLogin();
+        setLoginButtonEnabledState();
     }
 
     @Override
@@ -48,11 +44,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     public void onUsernameChange() {
-        enableLogin();
+        setLoginButtonEnabledState();
     }
 
     public void onPasswordChange() {
-        enableLogin();
+        setLoginButtonEnabledState();
     }
 
     public void onLoginClick() {
@@ -91,7 +87,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     private void enableAllFields() {
         getView().setUsernameEnabled();
         getView().setPasswordEnabled();
-        enableLogin();
+        setLoginButtonEnabledState();
     }
 
     private void unexpectedError() {
@@ -101,8 +97,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     private void loginSuccessful() {
-        ((Activity) getView().getContext()).setResult(Activity.RESULT_OK);
-        ((Activity) getView().getContext()).finish();
+        getView().goBack();
     }
 
     private void loginFailed() {
@@ -111,7 +106,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         enableAllFields();
     }
 
-    private void enableLogin() {
+    private void setLoginButtonEnabledState() {
         if (validateField()) {
             getView().setLoginButtonEnabled();
         } else {
