@@ -23,8 +23,9 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:hint="Username"
-                    tools:hint="Username"/>
+                    android:hint="@string/username"
+                    tools:hint="Username"
+                    android:singleLine="true"/>
 
             <EditText android:id="@+id/password"
                     android:layout_width="100dp"
@@ -32,15 +33,16 @@
                     android:layout_below="@id/username"
                     android:inputType="textPassword"
                     android:layout_centerHorizontal="true"
-                    android:hint="Password"
-                    tools:hint="Password"/>
+                    android:hint="@string/password"
+                    tools:hint="Password"
+                    android:singleLine="true"/>
 
             <Button android:id="@+id/login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/password"
                     android:layout_centerHorizontal="true"
-                    android:text="Login"
+                    android:text="@string/Login"
                     tools:text="Login"/>
 
             <FrameLayout

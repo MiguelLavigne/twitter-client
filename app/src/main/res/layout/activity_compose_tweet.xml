@@ -23,6 +23,7 @@
                     android:id="@+id/tweet_msg"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
+                    android:singleLine="true"
                     android:hint="@string/tweet_content_hint"
                     />
 

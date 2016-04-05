@@ -123,7 +123,7 @@ public class LoginView extends FrameLayout implements BaseView {
     }
 
     public void showNoConnectivityView() {
-        snackbar = Snackbar.make(coordinatorLayout, "No connectivity", Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(coordinatorLayout, "No connectivity", Snackbar.LENGTH_INDEFINITE);
         snackbar.show();
     }
 
