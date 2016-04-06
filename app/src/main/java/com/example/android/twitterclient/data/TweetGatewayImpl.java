@@ -4,7 +4,7 @@ import com.example.android.twitterclient.domain.Tweet;
 import com.example.android.twitterclient.domain.TweetGateway;
 import com.example.android.twitterclient.domain.TweetPersistence;
 import com.example.android.twitterclient.domain.TwitterApi;
-import com.f2prateek.rx.preferences.Preference;
+import com.example.android.twitterclient.util.Preference;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;

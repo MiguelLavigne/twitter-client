@@ -1,6 +1,6 @@
 package com.example.android.twitterclient.domain;
 
-import com.f2prateek.rx.preferences.Preference;
+import com.example.android.twitterclient.util.Preference;
 import javax.inject.Inject;
 import javax.inject.Named;
 
