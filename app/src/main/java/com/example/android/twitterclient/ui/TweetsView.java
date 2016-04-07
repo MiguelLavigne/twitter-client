@@ -2,6 +2,7 @@ package com.example.android.twitterclient.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -14,18 +15,19 @@ import com.example.android.twitterclient.R;
 import com.example.android.twitterclient.domain.TweetGateway;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import javax.inject.Inject;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class TweetsView extends RelativeLayout {
     @Bind(R.id.tweets) RecyclerView tweets;
+    @Bind(R.id.refresh) SwipeRefreshLayout swipeRefresh;
 
     @Inject TweetGateway tweetGateway;
 
     private TweetsAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private Subscription subscription;
+    private CompositeSubscription subscriptions;
 
     public TweetsView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -45,21 +47,30 @@ public class TweetsView extends RelativeLayout {
         tweets.setHasFixedSize(true);
         tweets.setLayoutManager(layoutManager);
         tweets.setAdapter(adapter);
+        swipeRefresh.setOnRefreshListener(tweetGateway::forceRefresh);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        subscription = tweetGateway.get()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter);
+        subscriptions = new CompositeSubscription();
+        subscriptions.add(
+                tweetGateway.get()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(adapter)
+        );
+        subscriptions.add(
+                tweetGateway.refreshingStateObservable()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(swipeRefresh::setRefreshing)
+        );
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        subscription.unsubscribe();
+        subscriptions.unsubscribe();
     }
 
     @OnClick(R.id.add_tweet)

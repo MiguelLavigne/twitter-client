@@ -26,7 +26,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         super.onReady();
         subscriptions = new CompositeSubscription();
         Observable<Boolean> observable = connectivityProvider.observe();
-        ConnectableObservable<Boolean> connectivityObservable = observable.publish();//connectivityProvider.observe().publish();
+        ConnectableObservable<Boolean> connectivityObservable = observable.publish();
         subscriptions.add(
                 connectivityObservable.filter(Booleans.TRUE)
                         .subscribe(connected -> handleConnectivityRestored())

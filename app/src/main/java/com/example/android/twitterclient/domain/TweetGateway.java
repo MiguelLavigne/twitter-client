@@ -7,4 +7,8 @@ public interface TweetGateway {
     Observable<List<Tweet>> get();
 
     Observable<Void> add(Tweet tweet);
+
+    void forceRefresh();
+
+    Observable<Boolean> refreshingStateObservable();
 }
