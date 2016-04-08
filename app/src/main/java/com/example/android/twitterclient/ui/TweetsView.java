@@ -23,7 +23,6 @@ import javax.inject.Inject;
 public class TweetsView extends FrameLayout implements BaseView {
     @Bind(R.id.tweets) RecyclerView tweets;
     @Bind(R.id.refresh) SwipeRefreshLayout swipeRefresh;
-    @Bind(R.id.coordinator) CoordinatorLayout coordinator;
     @Bind(R.id.add_tweet) FloatingActionButton composeTweet;
 
     @Inject TweetsPresenter presenter;
@@ -78,7 +77,7 @@ public class TweetsView extends FrameLayout implements BaseView {
     }
 
     public void showErrorWithRetry() {
-        Snackbar bar = Snackbar.make(coordinator, R.string.failed_to_refresh, Snackbar.LENGTH_LONG);
+        Snackbar bar = Snackbar.make(composeTweet, R.string.failed_to_refresh, Snackbar.LENGTH_LONG);
         bar.setAction(R.string.retry, view -> presenter.refresh());
         bar.show();
     }
