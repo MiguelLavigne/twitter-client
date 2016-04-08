@@ -35,7 +35,7 @@ public class NetModule {
     @Singleton
     MockRetrofit provideMockRetrofit(Retrofit retrofit) {
         NetworkBehavior behavior = NetworkBehavior.create();
-        behavior.setFailurePercent(5);
+        behavior.setFailurePercent(65);
         return new MockRetrofit.Builder(retrofit)
                 .networkBehavior(behavior)
                 .build();
@@ -66,8 +66,8 @@ public class NetModule {
 
         @Override
         public Observable<Tweet> postTweet(Tweet tweet) {
-            persistence.add(tweet);
-            return behaviorDelegate.returningResponse(tweet).postTweet(tweet);
+            return behaviorDelegate.returningResponse(tweet).postTweet(tweet)
+                    .doOnNext(persistence::add);
         }
 
         @Override
