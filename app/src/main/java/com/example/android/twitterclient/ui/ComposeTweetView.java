@@ -19,7 +19,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import javax.inject.Inject;
 import rx.subscriptions.CompositeSubscription;
 
-public class ComposeTweetView extends RelativeLayout implements BaseView {
+public class ComposeTweetView extends FrameLayout implements BaseView {
     @Bind(R.id.coordinator) CoordinatorLayout coordinator;
     @Bind(R.id.tweet_msg) EditText msgEdit;
     @Bind(R.id.tweet) Button tweetButton;
