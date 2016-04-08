@@ -91,5 +91,6 @@ public class ComposeTweetView extends FrameLayout implements BaseView {
         snackbar.setAction("Retry", v -> {
             presenter.onRetryClick();
         });
+        snackbar.show();
     }
 }
