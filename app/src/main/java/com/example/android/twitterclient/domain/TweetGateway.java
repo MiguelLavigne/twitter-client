@@ -4,11 +4,17 @@ import java.util.List;
 import rx.Observable;
 
 public interface TweetGateway {
+    interface RefreshState {
+        boolean isDone();
+
+        boolean isSuccessful();
+    }
+
     Observable<List<Tweet>> get();
 
     Observable<Void> add(Tweet tweet);
 
     void forceRefresh();
 
-    Observable<Boolean> refreshingStateObservable();
+    Observable<RefreshState> refreshingStateObservable();
 }

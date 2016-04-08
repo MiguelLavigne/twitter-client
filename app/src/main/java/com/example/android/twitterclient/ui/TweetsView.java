@@ -2,32 +2,34 @@ package com.example.android.twitterclient.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.example.android.twitterclient.App;
 import com.example.android.twitterclient.R;
-import com.example.android.twitterclient.domain.TweetGateway;
+import com.example.android.twitterclient.domain.Tweet;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+import java.util.List;
 import javax.inject.Inject;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
-public class TweetsView extends RelativeLayout {
+public class TweetsView extends FrameLayout implements BaseView {
     @Bind(R.id.tweets) RecyclerView tweets;
     @Bind(R.id.refresh) SwipeRefreshLayout swipeRefresh;
+    @Bind(R.id.coordinator) CoordinatorLayout coordinator;
+    @Bind(R.id.add_tweet) FloatingActionButton composeTweet;
 
-    @Inject TweetGateway tweetGateway;
+    @Inject TweetsPresenter presenter;
 
     private TweetsAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private CompositeSubscription subscriptions;
 
     public TweetsView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,34 +49,37 @@ public class TweetsView extends RelativeLayout {
         tweets.setHasFixedSize(true);
         tweets.setLayoutManager(layoutManager);
         tweets.setAdapter(adapter);
-        swipeRefresh.setOnRefreshListener(tweetGateway::forceRefresh);
+        swipeRefresh.setOnRefreshListener(presenter::refresh);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        subscriptions = new CompositeSubscription();
-        subscriptions.add(
-                tweetGateway.get()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(adapter)
-        );
-        subscriptions.add(
-                tweetGateway.refreshingStateObservable()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(swipeRefresh::setRefreshing)
-        );
+        presenter.takeView(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        subscriptions.unsubscribe();
+        presenter.dropView(this);
     }
 
     @OnClick(R.id.add_tweet)
     public void onAddTweetClicked() {
         getContext().startActivity(new Intent(getContext(), ComposeTweetActivity.class));
+    }
+
+    public void setTweets(List<Tweet> tweets) {
+        adapter.call(tweets);
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        swipeRefresh.setRefreshing(refreshing);
+    }
+
+    public void showErrorWithRetry() {
+        Snackbar bar = Snackbar.make(coordinator, R.string.failed_to_refresh, Snackbar.LENGTH_LONG);
+        bar.setAction(R.string.retry, view -> presenter.refresh());
+        bar.show();
     }
 }

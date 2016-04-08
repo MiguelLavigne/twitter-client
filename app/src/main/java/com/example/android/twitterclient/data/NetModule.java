@@ -35,7 +35,7 @@ public class NetModule {
     @Singleton
     MockRetrofit provideMockRetrofit(Retrofit retrofit) {
         NetworkBehavior behavior = NetworkBehavior.create();
-        behavior.setFailurePercent(0);
+        behavior.setFailurePercent(5);
         return new MockRetrofit.Builder(retrofit)
                 .networkBehavior(behavior)
                 .build();

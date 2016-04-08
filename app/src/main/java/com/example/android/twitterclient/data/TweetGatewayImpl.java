@@ -18,7 +18,7 @@ public class TweetGatewayImpl implements TweetGateway {
     private final TwitterApi twitterApi;
     private final Preference<String> since;
 
-    private BehaviorSubject<Boolean> refreshingState = BehaviorSubject.create();
+    private BehaviorSubject<RefreshState> refreshingState = BehaviorSubject.create();
 
     @Inject
     public TweetGatewayImpl(TweetPersistence tweetPersistence, TwitterApi twitterApi,
@@ -30,15 +30,20 @@ public class TweetGatewayImpl implements TweetGateway {
 
     @Override
     public Observable<List<Tweet>> get() {
-        final Subscription subscription = twitterApi.getTweets(since.get())
+        final Subscription subscription = refreshRemote();
+        return tweetPersistence.asObservable().doOnUnsubscribe(subscription::unsubscribe);
+    }
+
+    private Subscription refreshRemote() {
+        return twitterApi.getTweets(since.get())
                 .doOnNext(response -> since.set(response.timestamp))
                 .map(response -> response.tweets)
+                .doOnError(t -> refreshingState.onNext(RefreshStateImpl.error()))
+                .doOnCompleted(() -> refreshingState.onNext(RefreshStateImpl.done()))
+                .doOnSubscribe(() -> refreshingState.onNext(RefreshStateImpl.refreshing()))
                 .onErrorResumeNext(Observable.empty())
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(() -> refreshingState.onNext(Boolean.TRUE))
-                .doOnTerminate(() -> refreshingState.onNext(Boolean.FALSE))
                 .subscribe(tweetPersistence::addAll);
-        return tweetPersistence.asObservable().doOnUnsubscribe(subscription::unsubscribe);
     }
 
     @Override
@@ -50,18 +55,43 @@ public class TweetGatewayImpl implements TweetGateway {
 
     @Override
     public void forceRefresh() {
-        twitterApi.getTweets(since.get())
-                .doOnNext(response -> since.set(response.timestamp))
-                .map(response -> response.tweets)
-                .onErrorResumeNext(Observable.empty())
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(() -> refreshingState.onNext(Boolean.TRUE))
-                .doOnTerminate(() -> refreshingState.onNext(Boolean.FALSE))
-                .subscribe(tweetPersistence::addAll);
+        refreshRemote();
     }
 
     @Override
-    public Observable<Boolean> refreshingStateObservable() {
+    public Observable<RefreshState> refreshingStateObservable() {
         return refreshingState.asObservable();
+    }
+
+    private static class RefreshStateImpl implements RefreshState {
+        public static RefreshStateImpl refreshing() {
+            return new RefreshStateImpl(true, false);
+        }
+
+        public static RefreshStateImpl done() {
+            return new RefreshStateImpl(false, false);
+        }
+
+        public static RefreshStateImpl error() {
+            return new RefreshStateImpl(false, true);
+        }
+
+        private RefreshStateImpl(boolean isRefreshing, boolean isError) {
+            this.isDone = !isRefreshing;
+            this.isSuccessful = !isError;
+        }
+
+        private boolean isDone;
+        private boolean isSuccessful;
+
+        @Override
+        public boolean isDone() {
+            return isDone;
+        }
+
+        @Override
+        public boolean isSuccessful() {
+            return isSuccessful;
+        }
     }
 }
