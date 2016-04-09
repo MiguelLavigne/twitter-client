@@ -1,5 +1,6 @@
 package com.example.android.twitterclient.data;
 
+import android.content.SharedPreferences;
 import com.example.android.twitterclient.domain.GetTweetResponse;
 import com.example.android.twitterclient.domain.LoginResponse;
 import com.example.android.twitterclient.domain.Tweet;
@@ -33,9 +34,9 @@ public class NetModule {
 
     @Provides
     @Singleton
-    MockRetrofit provideMockRetrofit(Retrofit retrofit) {
+    MockRetrofit provideMockRetrofit(Retrofit retrofit, SharedPreferences sp) {
         NetworkBehavior behavior = NetworkBehavior.create();
-        behavior.setFailurePercent(65);
+        behavior.setFailurePercent(sp.getInt("failure_percent", 0));
         return new MockRetrofit.Builder(retrofit)
                 .networkBehavior(behavior)
                 .build();

@@ -10,4 +10,5 @@
     <string name="Login">Login</string>
     <string name="failed_to_refresh">Failed to refresh</string>
     <string name="retry">Retry</string>
+    <string name="compose">Compose</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.android.twitterclient.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
@@ -80,5 +81,9 @@ public class TweetsView extends FrameLayout implements BaseView {
         Snackbar bar = Snackbar.make(composeTweet, R.string.failed_to_refresh, Snackbar.LENGTH_LONG);
         bar.setAction(R.string.retry, view -> presenter.refresh());
         bar.show();
+    }
+
+    public void setTitle(String title) {
+        ((Activity) getContext()).setTitle(title);
     }
 }
