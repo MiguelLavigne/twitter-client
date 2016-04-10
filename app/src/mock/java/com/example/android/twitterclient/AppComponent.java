@@ -1,7 +1,6 @@
-package com.example.android.twitterclient.data;
+package com.example.android.twitterclient;
 
-import com.example.android.twitterclient.App;
-import com.example.android.twitterclient.AppModule;
+import com.example.android.twitterclient.data.DataModule;
 import com.example.android.twitterclient.ui.ComposeTweetView;
 import com.example.android.twitterclient.ui.LoginView;
 import com.example.android.twitterclient.ui.TweetsActivity;
@@ -12,7 +11,7 @@ import javax.inject.Singleton;
 
 @Singleton
 @Component(modules = { AppModule.class, MockNetModule.class, DataModule.class })
-public interface AppComponent {
+public interface AppComponent extends AppGraph {
     void inject(App injectee);
 
     void inject(TweetsActivity injectee);

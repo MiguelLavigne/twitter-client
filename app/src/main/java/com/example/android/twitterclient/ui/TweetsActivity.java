@@ -8,14 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.example.android.twitterclient.App;
 import com.example.android.twitterclient.R;
-import com.example.android.twitterclient.data.TwitterApiPersistence;
 import com.example.android.twitterclient.domain.LogoutUser;
 import com.example.android.twitterclient.domain.UserPersistence;
 import javax.inject.Inject;
 
 public class TweetsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_LOGIN = 1;
-    @Inject TwitterApiPersistence twitterApiPersistence;
     @Inject UserPersistence userPersistence;
     @Inject LogoutUser logoutUser;
 
@@ -51,9 +49,6 @@ public class TweetsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.clear_tweets:
-                twitterApiPersistence.clear();
-                return true;
             case R.id.logout:
                 logoutUser.execute();
                 finish();

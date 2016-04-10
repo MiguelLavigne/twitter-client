@@ -1,6 +1,7 @@
-package com.example.android.twitterclient.data;
+package com.example.android.twitterclient;
 
 import android.content.SharedPreferences;
+import com.example.android.twitterclient.data.TwitterApiPersistence;
 import com.example.android.twitterclient.domain.GetTweetResponse;
 import com.example.android.twitterclient.domain.LoginResponse;
 import com.example.android.twitterclient.domain.Tweet;
