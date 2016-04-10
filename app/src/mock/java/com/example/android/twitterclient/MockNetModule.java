@@ -39,7 +39,7 @@ public class MockNetModule {
     MockRetrofit provideMockRetrofit(Retrofit retrofit, SharedPreferences sp) {
         NetworkBehavior behavior = NetworkBehavior.create();
         behavior.setDelay(sp.getInt("mock_request_delay", 2), TimeUnit.SECONDS);
-        behavior.setFailurePercent(sp.getInt("failure_percent", 0));
+        behavior.setFailurePercent(sp.getInt("mock_failure_percent", 0));
         return new MockRetrofit.Builder(retrofit)
                 .networkBehavior(behavior)
                 .build();
