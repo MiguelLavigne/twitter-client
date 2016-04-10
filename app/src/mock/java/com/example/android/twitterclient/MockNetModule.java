@@ -2,11 +2,11 @@ package com.example.android.twitterclient;
 
 import android.content.SharedPreferences;
 import com.example.android.twitterclient.data.TwitterApiPersistence;
+import com.example.android.twitterclient.domain.DateProvider;
 import com.example.android.twitterclient.domain.GetTweetResponse;
 import com.example.android.twitterclient.domain.LoginResponse;
 import com.example.android.twitterclient.domain.Tweet;
 import com.example.android.twitterclient.domain.TwitterApi;
-import com.example.android.twitterclient.util.DateProvider;
 import dagger.Module;
 import dagger.Provides;
 import java.util.List;

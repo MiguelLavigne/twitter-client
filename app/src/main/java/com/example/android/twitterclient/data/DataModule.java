@@ -1,9 +1,11 @@
 package com.example.android.twitterclient.data;
 
+import com.example.android.twitterclient.domain.DateProvider;
 import com.example.android.twitterclient.domain.TweetGateway;
 import com.example.android.twitterclient.domain.TweetPersistence;
 import com.example.android.twitterclient.domain.User;
 import com.example.android.twitterclient.domain.UserPersistence;
+import com.example.android.twitterclient.util.DateProviderImpl;
 import com.example.android.twitterclient.util.Preference;
 import com.example.android.twitterclient.util.PreferenceDelegate;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
@@ -34,6 +36,12 @@ public class DataModule {
     @Named("LatestTweetsTimestamp")
     public Preference<String> provideLatestTweetTimestamp(RxSharedPreferences sp) {
         return new PreferenceDelegate<>(sp.getString("latest_tweet_timestamp", null));
+    }
+
+    @Provides
+    @Singleton
+    public DateProvider provideDateProvider(DateProviderImpl impl) {
+        return impl;
     }
 
     @Provides
