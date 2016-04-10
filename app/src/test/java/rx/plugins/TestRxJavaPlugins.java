@@ -5,6 +5,11 @@ import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.schedulers.Schedulers;
 
+/**
+ * This class is an intruder in the {@link rx.plugins} package
+ * to make {@link RxJavaPlugins#reset()} method accessible since
+ * it's package scoped
+ */
 public class TestRxJavaPlugins {
 
     /**

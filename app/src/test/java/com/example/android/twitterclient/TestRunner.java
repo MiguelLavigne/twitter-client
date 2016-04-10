@@ -10,6 +10,8 @@ public class TestRunner extends BlockJUnit4ClassRunner {
      */
     public TestRunner(Class<?> klass) throws InitializationError {
         super(klass);
+        // We register immediate scheduler for all rx schedulers
+        // to facilitate testing
         TestRxJavaPlugins.registerImmediateSchedulers();
     }
 }
