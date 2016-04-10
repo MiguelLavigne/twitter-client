@@ -9,6 +9,7 @@ import com.example.android.twitterclient.util.DateProvider;
 import dagger.Module;
 import dagger.Provides;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import retrofit2.Retrofit;
@@ -20,7 +21,7 @@ import retrofit2.mock.NetworkBehavior;
 import rx.Observable;
 
 @Module
-public class NetModule {
+public class MockNetModule {
 
     @Provides
     @Singleton
@@ -28,7 +29,7 @@ public class NetModule {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("https://some-twitter-url-goes-here.com")
+                .baseUrl("https://mock")
                 .build();
     }
 
@@ -36,6 +37,7 @@ public class NetModule {
     @Singleton
     MockRetrofit provideMockRetrofit(Retrofit retrofit, SharedPreferences sp) {
         NetworkBehavior behavior = NetworkBehavior.create();
+        behavior.setDelay(sp.getInt("mock_request_delay", 2), TimeUnit.SECONDS);
         behavior.setFailurePercent(sp.getInt("failure_percent", 0));
         return new MockRetrofit.Builder(retrofit)
                 .networkBehavior(behavior)
@@ -48,6 +50,9 @@ public class NetModule {
         return new MockTwitterApi(mockRetrofit.create(TwitterApi.class), persistence, dateProvider);
     }
 
+    /**
+     * Simple class which allows us to fake the behavior of the {@link TwitterApi}
+     */
     private static class MockTwitterApi implements TwitterApi {
         private final BehaviorDelegate<TwitterApi> behaviorDelegate;
         private final TwitterApiPersistence persistence;

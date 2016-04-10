@@ -1,6 +1,7 @@
 package com.example.android.twitterclient;
 
 import android.app.Application;
+import com.example.android.twitterclient.data.AppComponent;
 import com.example.android.twitterclient.data.TwitterApiPersistence;
 import com.facebook.stetho.Stetho;
 import javax.inject.Inject;
@@ -14,10 +15,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        component = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
-
+        component = AppComponent.Initializer.init(this);
         component().inject(this);
         JodaTimeAndroid.init(this);
         Stetho.initializeWithDefaults(this);

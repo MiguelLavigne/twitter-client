@@ -20,6 +20,11 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  productFlavors {
+    mock {
+      applicationIdSuffix ".mock"
+    }
+  }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -66,6 +71,14 @@ dependencies {
 
   // Espresso UI Testing dependencies.
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+}
+
+// Remove mockRelease as it's not needed.
+android.variantFilter { variant ->
+  if(variant.buildType.name.equals('release')
+      && variant.getFlavors().get(0).name.equals('mock')) {
+    variant.setIgnore(true);
+  }
 }
 
 /*
