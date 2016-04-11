@@ -10,6 +10,7 @@ Once logged in, any of the tweets you create will use your username as the sende
 
 ### Package structure
 The project is separated in 3 main packages
+
 1. com.example.android.twitterclient.ui
 2. com.example.android.twitterclient.domain
 3. com.example.android.twitterclient.data
