@@ -64,6 +64,13 @@ The twitter api was implemented using Retrofit and mocked using retrofit-mock.  
 allows to control the behavior of the response.  This means that we can actually add delays to
 the rest call and deliver mocked data to get same feel you would get using the real twitter api.
 
+There's 2 preferences that can be changed to affect the delay and the error probability of your
+api request.  I haven't added the necessary debugging code to support chaning those values at runtime
+but if you wish to experiment with them you can modify the MockNetModule.java file.
+
+Look for `provideMockRetrofit` method and change the value for `mock_request_delay` which is in
+seconds and or `mock_failure_percent` which is a percentage.
+
 Only 3 API was implemented for the twitter api.  It's important to note that it's highly probable
 that the real Twitter api would require a very different interface but that wasn't taken into account
 for this test app.
