@@ -3,7 +3,6 @@ package com.example.android.twitterclient.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,7 +15,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.example.android.twitterclient.App;
 import com.example.android.twitterclient.R;
-import com.example.android.twitterclient.domain.Tweet;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import java.util.List;
 import javax.inject.Inject;
@@ -69,8 +67,8 @@ public class TweetsView extends FrameLayout implements BaseView {
         getContext().startActivity(new Intent(getContext(), ComposeTweetActivity.class));
     }
 
-    public void setTweets(List<Tweet> tweets) {
-        adapter.call(tweets);
+    public void setTweets(List<TweetViewItem> tweets) {
+        adapter.setItems(tweets);
     }
 
     public void setRefreshing(boolean refreshing) {
