@@ -1,6 +1,10 @@
 This test application is an example of how one can use MVP mixed with a use-case
 approach to write a simple application on Android
 
+Please be sure to keep in mind that right now edge cases such has on configuration
+change aren't directly support supported.  This was intented to keep development
+time shorter.
+
 ##How to login
 
 Use any username that is as least 5 character long and then use the password **trov22**.
