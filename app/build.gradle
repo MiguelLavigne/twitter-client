@@ -11,7 +11,7 @@ android {
     minSdkVersion 18
     targetSdkVersion 25
     versionCode 1
-    versionName "1.0"
+    versionName gitVersionName()
     testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
   }
   buildTypes {
@@ -108,5 +108,23 @@ configurations.compile.dependencies.each { compileDependency ->
   println "Excluding compile dependency: ${compileDependency.getName()}"
   configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
     configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+  }
+}
+
+/*
+ * Gets the version name from the latest Git tag
+ */
+def gitVersionName() {
+  // Possible arguments
+  //  details.lastTag
+  //  details.commitDistance
+  //  details.gitHash
+  //  details.branchName // is null if the repository in detached HEAD mode
+  //  details.isCleanTag
+  def details = versionDetails()
+  if (details.isCleanTag) {
+    return "$details.lastTag"
+  } else {
+    return "$details.lastTag-$details.commitDistance-$details.gitHash"
   }
 }
