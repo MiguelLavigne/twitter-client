@@ -125,6 +125,7 @@ def gitVersionName() {
   if (details.isCleanTag) {
     return "$details.lastTag"
   } else {
-    return "$details.lastTag-$details.commitDistance-$details.gitHash"
+    def branchName = details.branchName != null ? details.branchName : "head"
+    return "$details.lastTag-$details.commitDistance-$branchName-$details.gitHash"
   }
 }
