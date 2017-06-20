@@ -112,15 +112,19 @@ configurations.compile.dependencies.each { compileDependency ->
 }
 
 /*
- * Gets the version name from the latest Git tag
+ * Gets the version name from the latest Git tag using the current pattern
+ *
+ * {tag name}-{commit distance}-{branch name}-{commit hash}
+ *
+ * Possible options for details are
+ *
+ * details.lastTag - tag name of the latest tag
+ * details.commitDistance - number of commit since the latest tag
+ * details.gitHash - git hash of the current commit
+ * details.branchName - null if the repository in detached HEAD mode
+ * details.isCleanTag - true when pointing on a tag branch
  */
 def gitVersionName() {
-  // Possible arguments
-  //  details.lastTag
-  //  details.commitDistance
-  //  details.gitHash
-  //  details.branchName // is null if the repository in detached HEAD mode
-  //  details.isCleanTag
   def details = versionDetails()
   if (details.isCleanTag) {
     return "$details.lastTag"
